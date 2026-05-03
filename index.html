@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALEX WALLAR // 2049</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap');
+
+    :root {
+      --pink:       #ff2d78;
+      --hot-pink:   #ff0066;
+      --magenta:    #ff00ff;
+      --purple:     #b026ff;
+      --deep-violet:#5500cc;
+      --violet:     #7b00d4;
+      --cyan:       #00e5ff;
+      --teal:       #00ffcc;
+      --dark:       #07070f;
+      --darker:     #03030a;
+      --mid:        #0a0a1e;
+      --glass:      rgba(10, 5, 28, 0.82);
+      --glass2:     rgba(18, 0, 40, 0.7);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--darker);
+      color: #c8a8ff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px;
+      overflow-x: hidden;
+      min-height: 100vh;
+      cursor: none;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      border: 1px solid var(--cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.15s, height 0.15s, border-color 0.15s;
+      box-shadow: 0 0 8px var(--cyan), inset 0 0 4px rgba(0,229,255,0.3);
+    }
+    #cursor-trail {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid rgba(176,38,255,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: left 0.08s ease, top 0.08s ease, width 0.3s, height 0.3s;
+    }
+    body:has(a:hover) #cursor { border-color: var(--pink); box-shadow: 0 0 12px var(--pink); width: 20px; height: 20px; }
+
+    /* ── RAIN ── */
+    #rain {
+      position: fixed; inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── SCANLINES ── */
+    #scanlines {
+      position: fixed; inset: 0;
+      z-index: 9990;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.06) 3px,
+        rgba(0,0,0,0.06) 4px
+      );
+    }
+
+    /* ── VIGNETTE ── */
+    #vignette {
+      position: fixed; inset: 0;
+      z-index: 9989;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center,
+        transparent 40%,
+        rgba(0,0,0,0.55) 100%
+      );
+    }
+
+    /* ── FLICKER ── */
+    #flicker {
+      position: fixed; inset: 0;
+      z-index: 9988;
+      pointer-events: none;
+      background: rgba(255,0,255,0.012);
+      animation: screenFlicker 0.1s steps(1) infinite;
+    }
+    @keyframes screenFlicker {
+      0%   { opacity: 1; }
+      48%  { opacity: 1; }
+      50%  { opacity: 0.92; }
+      52%  { opacity: 1; }
+      90%  { opacity: 1; }
+      91%  { opacity: 0.96; }
+      100% { opacity: 1; }
+    }
+
+    /* ── CHROMATIC ABERRATION GLOBAL ── */
+    .ca {
+      position: relative;
+      display: inline-block;
+    }
+    .ca::before { content: attr(data-text); position: absolute; top: 0; left: -1px; color: var(--cyan); opacity: 0.4; clip-path: polygon(0 0,100% 0,100% 45%,0 45%); }
+    .ca::after  { content: attr(data-text); position: absolute; top: 0; left:  1px; color: var(--hot-pink); opacity: 0.4; clip-path: polygon(0 55%,100% 55%,100% 100%,0 100%); }
+
+    /* ── CONTENT LAYERS ── */
+    .wrapper {
+      position: relative;
+      z-index: 100;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ============================
+       NAV
+       ============================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 44px;
+      background: linear-gradient(180deg, rgba(3,3,10,0.97) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(176,38,255,0.12);
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: var(--pink);
+      text-decoration: none;
+      text-shadow: 0 0 15px var(--pink), 0 0 40px var(--magenta);
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+    @keyframes logoPulse {
+      0%,100% { text-shadow: 0 0 15px var(--pink), 0 0 40px var(--magenta); }
+      50%      { text-shadow: 0 0 25px var(--pink), 0 0 65px var(--magenta), 0 0 100px var(--violet); }
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(176,38,255,0.7);
+      text-decoration: none;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      transform: scaleX(0);
+      transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* status bar */
+    .status-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 9000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 44px;
+      background: rgba(3,3,10,0.95);
+      border-top: 1px solid rgba(176,38,255,0.2);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: rgba(176,38,255,0.5);
+    }
+    .status-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 6px var(--teal);
+      margin-right: 8px;
+      animation: blink 2s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    #clock { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+
+    /* ============================
+       HERO
+       ============================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 90px 0 80px;
+      position: relative;
+    }
+
+    .boot-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--teal);
+      text-shadow: 0 0 10px var(--teal);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typeIn 2.5s steps(45, end) forwards;
+    }
+    .boot-text2 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(0,229,255,0.5);
+      margin-bottom: 32px;
+      animation: typeIn 3s steps(55, end) 0.8s both;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @keyframes typeIn {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    /* GIANT NAME */
+    .hero-name {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .name-first {
+      display: block;
+      color: #fff;
+      text-shadow:
+        0 0 7px #fff,
+        0 0 20px rgba(255,255,255,0.8),
+        0 0 45px var(--pink),
+        0 0 90px var(--pink),
+        0 0 160px var(--purple);
+      animation: nameGlow 4s ease-in-out infinite;
+    }
+    @keyframes nameGlow {
+      0%,100% {
+        text-shadow: 0 0 7px #fff, 0 0 20px rgba(255,255,255,0.8), 0 0 45px var(--pink), 0 0 90px var(--pink), 0 0 160px var(--purple);
+      }
+      50% {
+        text-shadow: 0 0 10px #fff, 0 0 30px #fff, 0 0 60px var(--magenta), 0 0 120px var(--magenta), 0 0 200px var(--violet);
+      }
+    }
+
+    .name-last {
+      display: block;
+      color: var(--pink);
+      text-shadow:
+        0 0 10px var(--hot-pink),
+        0 0 30px var(--hot-pink),
+        0 0 70px var(--magenta),
+        0 0 130px var(--magenta),
+        0 0 220px var(--violet);
+      animation: lastGlow 4s ease-in-out infinite reverse;
+      position: relative;
+    }
+    @keyframes lastGlow {
+      0%,100% {
+        text-shadow: 0 0 10px var(--hot-pink), 0 0 30px var(--hot-pink), 0 0 70px var(--magenta), 0 0 130px var(--magenta), 0 0 220px var(--violet);
+      }
+      50% {
+        text-shadow: 0 0 15px #fff, 0 0 40px var(--pink), 0 0 90px var(--magenta), 0 0 160px var(--purple), 0 0 250px var(--violet);
+      }
+    }
+
+    /* glitch on name */
+    .name-last::before {
+      content: 'WALLAR';
+      position: absolute; top: 0; left: 0;
+      color: var(--cyan);
+      opacity: 0;
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      animation: glitchSlice 7s infinite;
+    }
+    .name-last::after {
+      content: 'WALLAR';
+      position: absolute; top: 0; left: 0;
+      color: var(--magenta);
+      opacity: 0;
+      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+      animation: glitchSlice2 7s infinite;
+    }
+    @keyframes glitchSlice {
+      0%,93%,100% { opacity: 0; transform: translate(0); }
+      94%  { opacity: 0.8; transform: translate(-5px, 2px); }
+      95%  { opacity: 0.8; transform: translate(5px, -2px); }
+      96%  { opacity: 0.8; transform: translate(-3px, 4px); }
+      97%  { opacity: 0; }
+    }
+    @keyframes glitchSlice2 {
+      0%,93%,100% { opacity: 0; transform: translate(0); }
+      94%  { opacity: 0.7; transform: translate(4px, -3px); }
+      95%  { opacity: 0.7; transform: translate(-4px, 2px); }
+      96%  { opacity: 0.7; transform: translate(3px, -1px); }
+      97%  { opacity: 0; }
+    }
+
+    .hero-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      letter-spacing: 0.7em;
+      text-transform: uppercase;
+      color: var(--purple);
+      text-shadow: 0 0 14px var(--purple), 0 0 35px var(--violet);
+      margin-bottom: 40px;
+      margin-top: 14px;
+    }
+
+    .hero-lead {
+      max-width: 560px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(200,168,255,0.8);
+      font-weight: 300;
+      margin-bottom: 42px;
+      border-left: 2px solid var(--pink);
+      padding-left: 20px;
+      box-shadow: -4px 0 20px rgba(255,45,120,0.2);
+    }
+    .hero-lead strong { color: var(--pink); font-weight: 600; text-shadow: 0 0 8px var(--pink); }
+
+    /* badges */
+    .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 44px; }
+    .badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s;
+      clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    }
+    .badge::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .badge:hover::before { opacity: 0.08; }
+    .bp { border-color: var(--pink); color: var(--pink); text-shadow: 0 0 6px var(--pink); box-shadow: 0 0 8px rgba(255,45,120,0.2); }
+    .bc { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); box-shadow: 0 0 8px rgba(0,229,255,0.2); }
+    .bv { border-color: var(--purple); color: var(--purple); text-shadow: 0 0 6px var(--purple); box-shadow: 0 0 8px rgba(176,38,255,0.2); }
+    .bt { border-color: var(--teal); color: var(--teal); text-shadow: 0 0 6px var(--teal); box-shadow: 0 0 8px rgba(0,255,204,0.2); }
+
+    .cta-row { display: flex; gap: 18px; flex-wrap: wrap; }
+    .btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 15px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--hot-pink) 0%, var(--violet) 100%);
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.8);
+      box-shadow: 0 0 25px rgba(255,0,102,0.6), 0 0 60px rgba(123,0,212,0.35), 0 4px 15px rgba(0,0,0,0.5);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .btn-primary:hover::before { opacity: 1; }
+    .btn-primary:hover { box-shadow: 0 0 45px rgba(255,0,102,0.9), 0 0 90px rgba(176,38,255,0.5); transform: translateY(-3px); }
+
+    .btn-ghost {
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan);
+      box-shadow: 0 0 15px rgba(0,229,255,0.2), inset 0 0 20px rgba(0,229,255,0.03);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .btn-ghost:hover { background: rgba(0,229,255,0.08); box-shadow: 0 0 35px rgba(0,229,255,0.5); transform: translateY(-3px); }
+
+    /* HERO BOTTOM LINE */
+    .hero-line {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--violet) 15%, var(--pink) 35%, var(--cyan) 50%, var(--pink) 65%, var(--violet) 85%, transparent 100%);
+      box-shadow: 0 0 20px var(--pink), 0 0 50px var(--purple), 0 -4px 30px rgba(255,45,120,0.15);
+    }
+
+    /* ============================
+       NEON SIGN DECORATION
+       ============================ */
+    .neon-sign {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border: 1px solid;
+      display: inline-block;
+      animation: signFlicker 5s infinite;
+    }
+    .neon-sign-pink {
+      color: var(--hot-pink);
+      border-color: var(--hot-pink);
+      box-shadow: 0 0 8px var(--hot-pink), 0 0 20px rgba(255,0,102,0.4), inset 0 0 8px rgba(255,0,102,0.05);
+      text-shadow: 0 0 8px var(--hot-pink), 0 0 20px var(--magenta);
+    }
+    .neon-sign-cyan {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0,229,255,0.4), inset 0 0 8px rgba(0,229,255,0.05);
+      text-shadow: 0 0 8px var(--cyan), 0 0 20px var(--teal);
+    }
+    @keyframes signFlicker {
+      0%,95%,100% { opacity: 1; }
+      96% { opacity: 0.7; }
+      97% { opacity: 1; }
+      98% { opacity: 0.5; }
+      99% { opacity: 1; }
+    }
+
+    /* ============================
+       SECTION CHROME
+       ============================ */
+    .section { padding: 100px 0; position: relative; z-index: 100; }
+
+    .section-header { margin-bottom: 52px; }
+    .section-eyebrow {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      color: var(--teal);
+      text-shadow: 0 0 8px var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 20px var(--pink), 0 0 60px var(--purple);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), transparent);
+      box-shadow: 0 0 8px var(--pink);
+      max-width: 300px;
+    }
+
+    /* ============================
+       ABOUT
+       ============================ */
+    #about {
+      background:
+        linear-gradient(135deg, rgba(123,0,212,0.04) 0%, transparent 50%),
+        linear-gradient(180deg, var(--darker) 0%, rgba(10,5,28,0.6) 50%, var(--darker) 100%);
+      border-top: 1px solid rgba(176,38,255,0.15);
+      border-bottom: 1px solid rgba(176,38,255,0.15);
+    }
+
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: start; }
+
+    .about-text p { line-height: 1.8; color: rgba(200,168,255,0.78); margin-bottom: 18px; font-weight: 300; font-size: 1rem; }
+    .about-text p strong { color: var(--pink); font-weight: 600; text-shadow: 0 0 8px rgba(255,45,120,0.5); }
+    .about-text p em { color: var(--cyan); font-style: normal; font-weight: 600; }
+
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .stat-card {
+      background: var(--glass2);
+      border: 1px solid rgba(176,38,255,0.25);
+      padding: 22px 18px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 2px; height: 100%;
+      background: linear-gradient(180deg, var(--pink), var(--violet), transparent);
+      box-shadow: 0 0 10px var(--pink);
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(0deg, rgba(176,38,255,0.06), transparent);
+    }
+    .stat-card:hover {
+      border-color: rgba(255,45,120,0.45);
+      box-shadow: 0 0 30px rgba(176,38,255,0.25), inset 0 0 30px rgba(176,38,255,0.04);
+      transform: translateY(-4px);
+    }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: var(--pink);
+      text-shadow: 0 0 15px var(--pink), 0 0 35px var(--magenta);
+      line-height: 1;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: rgba(176,38,255,0.7);
+      text-transform: uppercase;
+    }
+
+    .award-box {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(255,0,102,0.08), rgba(176,38,255,0.05));
+      border: 1px solid rgba(255,45,120,0.3);
+      padding: 18px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--pink);
+      text-shadow: 0 0 8px rgba(255,45,120,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .award-box::before {
+      content: '★';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--pink);
+      text-shadow: 0 0 12px var(--pink), 0 0 25px var(--magenta);
+      animation: starPulse 2s ease-in-out infinite;
+    }
+    @keyframes starPulse {
+      0%,100% { text-shadow: 0 0 12px var(--pink), 0 0 25px var(--magenta); }
+      50%      { text-shadow: 0 0 20px var(--pink), 0 0 45px var(--magenta), 0 0 70px var(--purple); }
+    }
+
+    /* ============================
+       EXPERIENCE
+       ============================ */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--pink), var(--violet), var(--cyan), transparent);
+      box-shadow: 0 0 8px var(--purple);
+    }
+
+    .work-card {
+      position: relative;
+      background: var(--glass2);
+      border: 1px solid rgba(176,38,255,0.22);
+      padding: 30px 26px;
+      margin-bottom: 22px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+      overflow: hidden;
+    }
+    .work-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 0; height: 0;
+      border-left: 18px solid transparent;
+      border-top: 18px solid var(--pink);
+      filter: drop-shadow(0 0 5px var(--pink));
+    }
+    /* timeline dot */
+    .work-card::before {
+      content: '';
+      position: absolute; left: -34px; top: 28px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 10px var(--pink), 0 0 20px var(--magenta);
+    }
+    .work-card:hover {
+      border-color: rgba(255,45,120,0.4);
+      box-shadow: 0 0 35px rgba(176,38,255,0.2), 0 0 70px rgba(176,38,255,0.07);
+      transform: translateX(6px);
+    }
+    .work-card-inner { position: relative; z-index: 2; }
+    .work-card-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,45,120,0.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .work-card:hover .work-card-bg { opacity: 1; }
+
+    .work-period {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan);
+      margin-bottom: 7px;
+    }
+    .work-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255,255,255,0.3);
+      margin-bottom: 3px;
+    }
+    .work-org {
+      color: var(--pink);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(255,45,120,0.5);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .work-org-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      padding: 2px 7px;
+      border: 1px solid rgba(0,229,255,0.35);
+      color: var(--cyan);
+      text-shadow: none;
+    }
+    .work-desc {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(200,168,255,0.65);
+      font-weight: 300;
+    }
+
+    /* ============================
+       RESEARCH
+       ============================ */
+    #research {
+      background:
+        linear-gradient(135deg, rgba(0,229,255,0.025) 0%, transparent 50%),
+        linear-gradient(180deg, var(--darker) 0%, rgba(5,5,20,0.7) 50%, var(--darker) 100%);
+      border-top: 1px solid rgba(0,229,255,0.12);
+      border-bottom: 1px solid rgba(0,229,255,0.12);
+    }
+
+    .research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+
+    .research-card {
+      background: var(--glass2);
+      border: 1px solid rgba(0,229,255,0.18);
+      padding: 28px 22px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .research-card::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(0,229,255,0.04), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .research-card:hover::before { opacity: 1; }
+    .research-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      box-shadow: 0 0 10px var(--cyan);
+      transform: scaleX(0);
+      transition: transform 0.35s ease;
+    }
+    .research-card:hover::after { transform: scaleX(1); }
+    .research-card:hover {
+      border-color: rgba(0,229,255,0.4);
+      box-shadow: 0 0 35px rgba(0,229,255,0.12);
+      transform: translateY(-5px);
+    }
+
+    .research-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: rgba(0,229,255,0.3);
+      margin-bottom: 12px;
+    }
+    .research-icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      display: block;
+      filter: drop-shadow(0 0 8px var(--cyan));
+    }
+    .research-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .research-desc {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: rgba(200,168,255,0.6);
+      font-weight: 300;
+    }
+
+    /* ============================
+       PROJECTS
+       ============================ */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr)); gap: 18px; }
+
+    .project-card {
+      background: var(--glass2);
+      border: 1px solid rgba(176,38,255,0.2);
+      padding: 24px 20px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% -10%, rgba(176,38,255,0.1), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover {
+      border-color: rgba(176,38,255,0.48);
+      box-shadow: 0 0 35px rgba(176,38,255,0.2), 0 10px 40px rgba(0,0,0,0.4);
+      transform: translateY(-5px) scale(1.01);
+    }
+
+    .project-lang {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: rgba(176,38,255,0.5);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .project-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--magenta);
+      text-shadow: 0 0 10px var(--magenta), 0 0 25px rgba(255,0,255,0.4);
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+    .project-desc {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: rgba(200,168,255,0.6);
+      font-weight: 300;
+      margin-bottom: 14px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--purple);
+      border: 1px solid rgba(176,38,255,0.35);
+      padding: 3px 8px;
+      text-transform: uppercase;
+    }
+
+    .project-arrow {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-size: 1rem;
+      color: rgba(176,38,255,0.3);
+      transition: all 0.25s;
+    }
+    .project-card:hover .project-arrow {
+      color: var(--magenta);
+      text-shadow: 0 0 10px var(--magenta);
+      transform: translate(3px, -3px);
+    }
+
+    /* ============================
+       CONTACT
+       ============================ */
+    #contact { padding-bottom: 140px; }
+
+    .contact-intro {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: rgba(200,168,255,0.5);
+      margin-bottom: 30px;
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    .contact-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      padding: 15px 24px;
+      position: relative;
+      overflow: hidden;
+      color: rgba(200,168,255,0.8);
+      text-transform: uppercase;
+      transition: all 0.25s;
+      border: 1px solid rgba(255,45,120,0.25);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .contact-link::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--pink), var(--violet));
+      box-shadow: 0 0 8px var(--pink);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .contact-link::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(255,45,120,0.07), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .contact-link:hover::before { opacity: 1; }
+    .contact-link:hover::after  { opacity: 1; }
+    .contact-link:hover {
+      border-color: rgba(255,45,120,0.5);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255,45,120,0.2);
+      text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+    .c-icon {
+      font-size: 1.1rem;
+      position: relative; z-index: 1;
+      filter: drop-shadow(0 0 6px var(--pink));
+    }
+    .c-text { position: relative; z-index: 1; }
+
+    /* ============================
+       NEON DIVIDER
+       ============================ */
+    .neon-div {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--deep-violet) 10%,
+        var(--purple) 25%,
+        var(--hot-pink) 40%,
+        var(--magenta) 50%,
+        var(--hot-pink) 60%,
+        var(--purple) 75%,
+        var(--deep-violet) 90%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px var(--pink),
+        0 0 20px var(--pink),
+        0 0 40px var(--purple),
+        0 0 80px rgba(176,38,255,0.2);
+      position: relative; z-index: 100;
+    }
+
+    /* ============================
+       FOOTER
+       ============================ */
+    footer {
+      position: relative; z-index: 100;
+      padding: 28px 44px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: rgba(176,38,255,0.4);
+      border-top: 1px solid rgba(176,38,255,0.1);
+    }
+
+    /* ============================
+       SCROLL REVEAL
+       ============================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.in { opacity: 1; transform: translateX(0); }
+
+    /* ============================
+       RESPONSIVE
+       ============================ */
+    @media (max-width: 720px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 0.62rem; letter-spacing: 0.15em; }
+      .about-grid { grid-template-columns: 1fr; gap: 36px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+      .status-bar { padding: 6px 18px; font-size: 0.55rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LAYERS -->
+<canvas id="rain"></canvas>
+<div id="scanlines"></div>
+<div id="vignette"></div>
+<div id="flicker"></div>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">AW // 2049</a>
+  <ul class="nav-links">
+    <li><a href="#about">Profile</a></li>
+    <li><a href="#work">Experience</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Code</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span><span class="status-dot"></span>SYSTEM ONLINE // LOCATION: SOMERVILLE, MA</span>
+  <span id="clock">--:--:--</span>
+  <span>REPLICANT DETECTION: NEGATIVE</span>
+</div>
+
+<!-- ════════════════════════════════
+     HERO
+     ════════════════════════════════ -->
+<section id="hero">
+  <div class="wrapper">
+
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+      <span class="neon-sign neon-sign-cyan">Nexus-7 // MIT CSAIL</span>
+      <span class="neon-sign neon-sign-pink">Forbes 30 Under 30</span>
+    </div>
+
+    <p class="boot-text">&gt; INITIATING IDENTITY PROTOCOL // NODE: a20r.github.io</p>
+    <p class="boot-text2">&gt; DECRYPTING PROFILE // CLEARANCE: ALPHA // TIMESTAMP: 2049.01.03</p>
+
+    <h1 class="hero-name">
+      <span class="name-first ca" data-text="ALEX">ALEX</span>
+      <span class="name-last" data-text="WALLAR">WALLAR</span>
+    </h1>
+
+    <p class="hero-subtitle">// Co-Founder &amp; CTO // The Routing Company</p>
+
+    <p class="hero-lead">
+      Building the <strong>operating system for public transit</strong>. Spun out of MIT CSAIL to
+      deploy Uber-style on-demand mobility for city buses — serving passengers across the
+      <strong>UK, US, and UAE</strong>. Named <strong>Forbes 30 Under 30 Europe 2024</strong>.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge bp">Forbes 30 Under 30 &mdash; EU 2024</span>
+      <span class="badge bc">MIT CSAIL</span>
+      <span class="badge bv">1,600+ Citations</span>
+      <span class="badge bt">Autonomous Vehicles</span>
+      <span class="badge bp">Mobility on Demand</span>
+      <span class="badge bc">Multi-Robot Systems</span>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#work">Access Profile</a>
+      <a class="btn btn-ghost" href="https://github.com/a20r" target="_blank" rel="noopener">GitHub // a20r</a>
+    </div>
+
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- ════════════════════════════════
+     ABOUT
+     ════════════════════════════════ -->
+<section id="about" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">&gt; sys.profile // unit_id: AW-2049</p>
+      <h2 class="section-title reveal">Replicant Profile</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="reveal-left">
+          <strong>Alex Wallar</strong> is Co-Founder and CTO of
+          <em>The Routing Company</em> — a spinout from MIT CSAIL that brings
+          real-time algorithmic intelligence to public transit networks worldwide.
+        </p>
+        <p class="reveal-left">
+          Before leaving his PhD to build TRC full-time in 2019, Alex spent years at
+          <strong>MIT CSAIL's Distributed Robotics Lab</strong> under
+          <strong>Daniela Rus</strong> (Director of MIT CSAIL), researching optimization
+          algorithms for mobility-on-demand systems, autonomous fleet coordination,
+          and multi-robot path planning.
+        </p>
+        <p class="reveal-left">
+          TRC's technology replaces fixed-route buses with responsive, algorithm-driven
+          networks — <strong>Uber-style pickups</strong> within the public transport system.
+          Deployed across three continents. Backed by $5M seed funding.
+        </p>
+        <p class="reveal-left">
+          <strong>Lemelson Presidential Fellow</strong>. MIT Diversity Fellow.
+          Shell-MIT Energy Fellow. 10 research publications.
+          <em>1,611 citations</em> and counting.
+        </p>
+      </div>
+
+      <div>
+        <div class="stat-grid reveal">
+          <div class="stat-card">
+            <span class="stat-num">30</span>
+            <span class="stat-label">Forbes Under 30<br>Europe 2024</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">1.6K</span>
+            <span class="stat-label">Research<br>Citations</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Countries<br>Deployed</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">10</span>
+            <span class="stat-label">Published<br>Papers</span>
+          </div>
+        </div>
+
+        <div class="award-box reveal" style="margin-top:14px">
+          Forbes 30 Under 30 Europe 2024 &mdash; Transport &amp; Logistics
+        </div>
+        <div class="award-box reveal" style="margin-top:10px; border-color: rgba(0,229,255,0.3); color: var(--cyan); text-shadow: 0 0 8px rgba(0,229,255,0.5);">
+          MIT CSAIL // Lemelson Presidential Fellow
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- ════════════════════════════════
+     EXPERIENCE
+     ════════════════════════════════ -->
+<section id="work" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">&gt; sys.experience // log_depth: full</p>
+      <h2 class="section-title reveal">Experience Log</h2>
+    </div>
+
+    <div class="timeline">
+
+      <div class="work-card reveal">
+        <div class="work-card-bg"></div>
+        <div class="work-card-inner">
+          <p class="work-period">2018 &mdash; PRESENT // [ACTIVE]</p>
+          <p class="work-title">Co-Founder &amp; CTO</p>
+          <p class="work-org">
+            The Routing Company
+            <span class="work-org-badge">MIT Spinout</span>
+            <span class="work-org-badge">$5M Seed</span>
+          </p>
+          <p class="work-desc">
+            Building the intelligence layer for 21st-century public transit. TRC deploys
+            on-demand mobility algorithms to transit agencies — replacing inflexible fixed-route
+            buses with responsive, data-driven networks. Uber-style pickups, city-scale efficiency.
+            Live in the UK, United States, and UAE. Left MIT PhD program in May 2019 to pursue full-time.
+          </p>
+        </div>
+      </div>
+
+      <div class="work-card reveal">
+        <div class="work-card-bg"></div>
+        <div class="work-card-inner">
+          <p class="work-period">2016 &mdash; 2019 // [ARCHIVED]</p>
+          <p class="work-title">PhD Researcher</p>
+          <p class="work-org">
+            MIT CSAIL &mdash; Distributed Robotics Lab
+            <span class="work-org-badge">Daniela Rus</span>
+          </p>
+          <p class="work-desc">
+            Researched mathematical optimization for mobility-on-demand systems — real-time vehicle
+            rebalancing, dynamic trip-vehicle assignment, and autonomous fleet coordination at urban scale.
+            Collaborated with Javier Alonso-Mora, Samitha Samaranayake, and Emilio Frazzoli. Three
+            prestigious fellowships. Left to found The Routing Company.
+          </p>
+        </div>
+      </div>
+
+      <div class="work-card reveal">
+        <div class="work-card-bg"></div>
+        <div class="work-card-inner">
+          <p class="work-period">Summer 2016 // [ARCHIVED]</p>
+          <p class="work-title">Robotics Research Intern</p>
+          <p class="work-org">Amazon Robotics</p>
+          <p class="work-desc">
+            Applied multi-robot path-planning and coordination algorithms in warehouse automation
+            environments at Amazon scale. Real-world deployment of research-grade systems.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- ════════════════════════════════
+     RESEARCH
+     ════════════════════════════════ -->
+<section id="research" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">&gt; sys.research // citations: 1,611 // papers: 10</p>
+      <h2 class="section-title reveal">Research Domains</h2>
+    </div>
+
+    <div class="research-grid">
+
+      <div class="research-card reveal">
+        <p class="research-num">// 001</p>
+        <span class="research-icon">🚖</span>
+        <p class="research-name">Mobility on Demand</p>
+        <p class="research-desc">Mathematical optimization for real-time ride-sharing dispatch. Maximizing vehicle utilization while minimizing wait times across city-scale networks — the core engine behind TRC.</p>
+      </div>
+
+      <div class="research-card reveal">
+        <p class="research-num">// 002</p>
+        <span class="research-icon">🤖</span>
+        <p class="research-name">Autonomous Vehicles</p>
+        <p class="research-desc">Predictive routing and fleet control for robo-taxi systems. 2026 publication in IEEE Robotics and Automation Letters on accelerating high-capacity ridepooling in robo-taxi systems.</p>
+      </div>
+
+      <div class="research-card reveal">
+        <p class="research-num">// 003</p>
+        <span class="research-icon">🔁</span>
+        <p class="research-name">Vehicle Rebalancing</p>
+        <p class="research-desc">Proactively repositioning idle vehicles to meet predicted demand — the unsolved problem at the heart of efficient autonomous mobility. Covered in CNN for its implications on ride-sharing efficiency.</p>
+      </div>
+
+      <div class="research-card reveal">
+        <p class="research-num">// 004</p>
+        <span class="research-icon">🕸️</span>
+        <p class="research-name">Multi-Robot Systems</p>
+        <p class="research-desc">Swarm intelligence, path planning in cluttered dynamic environments, and networked robotics middleware. Built zmqros — multi-master ROS coordination using ZeroMQ.</p>
+      </div>
+
+      <div class="research-card reveal">
+        <p class="research-num">// 005</p>
+        <span class="research-icon">📡</span>
+        <p class="research-name">Sensor Networks</p>
+        <p class="research-desc">Sound source localization in reconfigurable wireless acoustic sensor networks — distributed signal processing at the intersection of hardware constraints and algorithmic elegance.</p>
+      </div>
+
+      <div class="research-card reveal">
+        <p class="research-num">// 006</p>
+        <span class="research-icon">👁️</span>
+        <p class="research-name">Computer Vision</p>
+        <p class="research-desc">In-browser eye tracking and gaze prediction — real-time computer vision running entirely client-side in the browser. Built camgaze.js: no server, no plugin, just JavaScript.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- ════════════════════════════════
+     PROJECTS
+     ════════════════════════════════ -->
+<section id="projects" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">&gt; sys.code // github: a20r // repos: open_source</p>
+      <h2 class="section-title reveal">Open Source</h2>
+    </div>
+
+    <div class="project-grid">
+
+      <a class="project-card reveal" href="https://github.com/a20r/camgaze.js" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// JavaScript</p>
+        <p class="project-name">camgaze.js</p>
+        <p class="project-desc">In-browser eye tracking and real-time gaze prediction. Computer vision that runs entirely client-side — no server, no overhead.</p>
+        <div class="project-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag">CV</span>
+          <span class="tag">WebCam</span>
+        </div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/a20r/locaudio" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// Python</p>
+        <p class="project-name">locaudio</p>
+        <p class="project-desc">Sound source localization in reconfigurable wireless acoustic sensor networks. Distributed signal processing meets hardware constraints.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Audio</span>
+          <span class="tag">Sensors</span>
+        </div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/a20r/zmqros" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// C++ / ROS</p>
+        <p class="project-name">zmqros</p>
+        <p class="project-desc">Multi-master middleware for ROS using ZeroMQ. Bridges robotic systems across network boundaries — async, lightweight, production-ready.</p>
+        <div class="project-tags">
+          <span class="tag">C++</span>
+          <span class="tag">ROS</span>
+          <span class="tag">ZeroMQ</span>
+        </div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/a20r/backfire" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// Python</p>
+        <p class="project-name">backfire</p>
+        <p class="project-desc">Automated testing framework for robotics. Bringing software engineering rigor — CI, reproducibility, regression testing — to robotic systems.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Testing</span>
+          <span class="tag">Robotics</span>
+        </div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/a20r/Dodger" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// Path Planning</p>
+        <p class="project-name">Dodger</p>
+        <p class="project-desc">Real-time path planning in cluttered dynamic environments. Autonomous agent obstacle avoidance when the world keeps moving.</p>
+        <div class="project-tags">
+          <span class="tag">Algorithms</span>
+          <span class="tag">Path Planning</span>
+          <span class="tag">Robotics</span>
+        </div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/a20r" target="_blank" rel="noopener">
+        <span class="project-arrow">↗</span>
+        <p class="project-lang">// GitHub</p>
+        <p class="project-name">+ More</p>
+        <p class="project-desc">Robotics utilities, Python libraries, optimization prototypes, and research-grade systems. 94 followers. Explore the full archive.</p>
+        <div class="project-tags">
+          <span class="tag">Open Source</span>
+          <span class="tag">a20r</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<!-- ════════════════════════════════
+     CONTACT
+     ════════════════════════════════ -->
+<section id="contact" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">&gt; sys.contact // channel: open</p>
+      <h2 class="section-title reveal">Open Channel</h2>
+    </div>
+    <p class="contact-intro reveal">
+      &gt; All transmission channels active. Encrypted links below.<br>
+      &gt; Response latency: variable. Signal always on.
+    </p>
+    <div class="contact-grid reveal">
+      <a class="contact-link" href="https://github.com/a20r" target="_blank" rel="noopener">
+        <span class="c-icon">⬡</span>
+        <span class="c-text">GitHub // a20r</span>
+      </a>
+      <a class="contact-link" href="https://linkedin.com/in/wallarelvo" target="_blank" rel="noopener">
+        <span class="c-icon">◈</span>
+        <span class="c-text">LinkedIn // wallarelvo</span>
+      </a>
+      <a class="contact-link" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">
+        <span class="c-icon">◎</span>
+        <span class="c-text">Google Scholar</span>
+      </a>
+      <a class="contact-link" href="https://theroutingcompany.com" target="_blank" rel="noopener">
+        <span class="c-icon">▸</span>
+        <span class="c-text">The Routing Company</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="neon-div"></div>
+
+<footer>
+  <span>&copy; 2049 // ALEX WALLAR</span>
+  <span>REPLICANT MODEL N7 // ALL MEMORIES IMPLANTED // DO ANDROIDS DREAM?</span>
+  <span>NEXUS-7 // SOMERVILLE, MA</span>
+</footer>
+
+<!-- ════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════ -->
+<script>
+// ── CLOCK ──
+(function() {
+  function tick() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+// ── CURSOR ──
+(function() {
+  const cur   = document.getElementById('cursor');
+  const trail = document.getElementById('cursor-trail');
+  let tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+    tx = e.clientX; ty = e.clientY;
+  });
+  function animTrail() {
+    trail.style.left = tx + 'px';
+    trail.style.top  = ty + 'px';
+    requestAnimationFrame(animTrail);
+  }
+  animTrail();
+})();
+
+// ── RAIN ──
+(function() {
+  const canvas = document.getElementById('rain');
+  const ctx = canvas.getContext('2d');
+
+  let W, H, drops;
+
+  const PALETTES = [
+    // pink/magenta
+    (a) => `rgba(255, ${30 + Math.random()*40|0}, ${160 + Math.random()*80|0}, ${a})`,
+    // purple
+    (a) => `rgba(${140 + Math.random()*80|0}, 0, 255, ${a})`,
+    // cyan
+    (a) => `rgba(0, ${180 + Math.random()*75|0}, 255, ${a})`,
+    // teal
+    (a) => `rgba(0, 255, ${180 + Math.random()*75|0}, ${a})`,
+    // white-ish
+    (a) => `rgba(220, 200, 255, ${a * 0.5})`,
+  ];
+
+  function makeDrop(x) {
+    const pi = Math.random() < 0.45 ? 0 : (Math.random() < 0.5 ? 1 : (Math.random() < 0.6 ? 2 : 3));
+    return {
+      x: x !== undefined ? x : Math.random() * W,
+      y: Math.random() * -H,
+      speed:  5 + Math.random() * 14,
+      length: 50 + Math.random() * 180,
+      opacity: 0.05 + Math.random() * 0.3,
+      width:  0.4 + Math.random() * 1.4,
+      palette: PALETTES[pi],
+      sway: (Math.random() - 0.5) * 0.15,  // slight horizontal drift
+    };
+  }
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    const count = Math.floor(W / 9);
+    drops = [];
+    for (let i = 0; i < count; i++) drops.push(makeDrop());
+  }
+
+  let last = 0;
+  function draw(ts) {
+    const dt = Math.min((ts - last) / 16.67, 2.5);
+    last = ts;
+
+    ctx.clearRect(0, 0, W, H);
+
+    for (let d of drops) {
+      const grad = ctx.createLinearGradient(d.x, d.y - d.length, d.x, d.y);
+      grad.addColorStop(0,   d.palette(0));
+      grad.addColorStop(0.3, d.palette(d.opacity * 0.3));
+      grad.addColorStop(1,   d.palette(d.opacity));
+
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y - d.length);
+      ctx.lineTo(d.x + d.sway * d.length, d.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = d.width;
+      ctx.stroke();
+
+      // splash at ground
+      if (d.y > H * 0.88) {
+        const alpha = (d.y - H * 0.88) / (H * 0.12) * d.opacity * 0.7;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = d.palette(alpha);
+        ctx.fill();
+      }
+
+      d.y  += d.speed * dt;
+      d.x  += d.sway  * dt;
+      if (d.y - d.length > H || d.x < -10 || d.x > W + 10) {
+        Object.assign(d, makeDrop(Math.random() * W));
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+
+// ── SCROLL REVEAL ──
+(function() {
+  const els = document.querySelectorAll('.reveal, .reveal-left');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
