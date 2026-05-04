@@ -968,13 +968,99 @@
     /* ============================
        RESPONSIVE
        ============================ */
+    /* ============================
+       MOBILE
+       ============================ */
+
+    /* Prevent any element from punching through the viewport */
+    html { overflow-x: hidden; }
+
     @media (max-width: 720px) {
-      nav { padding: 14px 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 0.62rem; letter-spacing: 0.15em; }
-      .about-grid { grid-template-columns: 1fr; gap: 36px; }
-      footer { flex-direction: column; gap: 8px; text-align: center; }
-      .status-bar { padding: 6px 18px; font-size: 0.55rem; }
+
+      /* ── NAV ── */
+      nav { padding: 12px 16px; gap: 12px; flex-wrap: wrap; }
+      .nav-logo { font-size: 0.8rem; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 0.6rem; letter-spacing: 0.1em; }
+      /* Hide lower-priority nav items to prevent wrapping */
+      .nav-links li:nth-child(3),
+      .nav-links li:nth-child(4) { display: none; }
+
+      /* ── STATUS BAR ── */
+      .status-bar { padding: 5px 16px; font-size: 0.52rem; }
+      /* Hide the rightmost status item on small screens */
+      .status-bar span:last-child { display: none; }
+
+      /* ── HERO ── */
+      #hero { padding: 100px 0 60px; }
+
+      /* Typewriter lines: nowrap causes scroll — allow wrap and disable the animation */
+      .boot-text,
+      .boot-text2 {
+        white-space: normal;
+        overflow: visible;
+        animation: none;
+        font-size: 0.62rem;
+        letter-spacing: 0.15em;
+      }
+      .boot-text2 { display: none; } /* second line is just noise on mobile */
+
+      .hero-subtitle {
+        font-size: 0.65rem;
+        letter-spacing: 0.3em; /* 0.7em was blowing out width */
+      }
+
+      .hero-lead { font-size: 1rem; }
+
+      .badge-row { gap: 8px; }
+      .badge { font-size: 0.62rem; letter-spacing: 0.06em; padding: 5px 10px; }
+
+      .cta-row { flex-direction: column; gap: 12px; }
+      .btn { text-align: center; padding: 14px 24px; }
+
+      /* Neon signs */
+      .neon-sign { font-size: 0.52rem; letter-spacing: 0.2em; padding: 4px 10px; }
+
+      /* ── ABOUT ── */
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .stat-grid  { grid-template-columns: 1fr 1fr; }
+
+      /* ── SECTION HEADINGS ── */
+      .section-title { font-size: 1.4rem; gap: 12px; }
+      .section-title::after { display: none; } /* decorative line clips on narrow screens */
+
+      /* ── RESEARCH & PROJECT GRIDS ──
+         minmax(280px) causes overflow when viewport < 320px;
+         drop to a single column on small screens              */
+      .research-grid,
+      .project-grid { grid-template-columns: 1fr; }
+
+      /* ── TIMELINE ── */
+      .timeline { padding-left: 18px; }
+      .work-card::before { left: -24px; }
+
+      /* ── CONTACT ── */
+      .contact-grid { flex-direction: column; }
+      .contact-link { width: 100%; }
+
+      /* ── FOOTER ── */
+      footer {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+        padding: 20px 16px 70px; /* extra bottom to clear status bar */
+        font-size: 0.55rem;
+      }
+      footer span:nth-child(2) { display: none; } /* hide middle blurb */
+
+      /* ── WRAPPER ── */
+      .wrapper { padding: 0 16px; }
+    }
+
+    /* Slightly larger phones — restore 2-col grids */
+    @media (min-width: 500px) and (max-width: 720px) {
+      .research-grid,
+      .project-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
