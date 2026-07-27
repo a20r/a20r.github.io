@@ -238,10 +238,17 @@
 
     /* ── Research ── */
     .research-lede { max-width: 42em; margin-bottom: 2rem; }
+    .list-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 0.4rem;
+    }
+    .research-note { margin-top: 1.5rem; color: var(--muted); }
     .highlights { list-style: none; max-width: 42em; }
     .highlights li {
       display: grid;
-      grid-template-columns: 92px 1fr;
+      grid-template-columns: 100px 1fr;
       gap: 1.5rem;
       padding: 0.85rem 0;
       border-top: 1px solid var(--line-soft);
@@ -356,10 +363,10 @@
         to riders, predicting demand, and rebalancing cars across a city. Currently
         that means R&amp;D fleet orchestration at <strong>Zoox</strong>. Before that, I
         co-founded <strong>The Routing Company</strong> out of MIT CSAIL and spent seven
-        years as its CTO, putting on-demand public transit on the ground in the UK,
-        US, and UAE.
+        years as its CTO, putting on-demand public transit on the ground on three
+        continents.
       </p>
-      <p class="hero-meta mono">MIT CSAIL &middot; Forbes 30 Under 30 Europe &middot; 1,600+ citations</p>
+      <p class="hero-meta mono">MIT CSAIL &middot; Forbes 30 Under 30 Europe &middot; 2,400+ citations</p>
       <div class="hero-links">
         <a class="textlink" href="https://github.com/a20r" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
         <a class="textlink" href="https://linkedin.com/in/wallarelvo" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
@@ -460,8 +467,11 @@
           <p class="job-desc">
             MIT spinout building demand-responsive transit — routing algorithms that
             let public agencies run service where riders actually are, instead of
-            fixed routes past empty stops. Deployed with transit agencies across the
-            UK, US, and UAE.
+            fixed routes past empty stops. Built the engine behind the Pingo platform
+            and deployed it on three continents: Houston, Kitsap County, and a
+            132-vehicle network in Rochester, NY — among the largest on-demand transit
+            services in North America — plus the Scottish Borders, Dunoon, and
+            suburban Melbourne.
           </p>
         </div>
       </div>
@@ -487,6 +497,16 @@
           </p>
         </div>
       </div>
+
+      <div class="job">
+        <p class="job-period mono">— 2015</p>
+        <div>
+          <p class="job-role">BSc (Hons) Computer Science · University of St Andrews</p>
+          <p class="job-desc">
+            Undergraduate research in motion planning and multi-robot systems.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -495,27 +515,38 @@
     <div class="container">
       <h2><span class="idx">02</span>Research</h2>
       <p class="research-lede">
-        My research sits where optimization meets the street: real-time ridepooling
-        and dispatch, proactive vehicle rebalancing, and multi-robot planning in
-        dynamic environments — with the occasional detour into acoustic sensor
-        networks and in-browser eye tracking. Ten publications and 1,600+ citations,
-        mostly on making shared fleets dramatically more efficient than the vehicles
-        they replace.
+        My research asks how much a city can move with how few vehicles. The headline
+        answer, from the PNAS study I co-authored at MIT: 3,000 shared vehicles could
+        serve 98% of New York's taxi demand — a result covered by CNN and Forbes.
+        Since then it's been predictive routing, vehicle rebalancing, and
+        high-capacity ridepooling for autonomous fleets, with earlier detours into
+        UAV motion planning, acoustic sensor networks, and in-browser eye tracking.
+        2,400+ citations.
       </p>
+      <p class="list-label mono">Selected publications</p>
       <ul class="highlights">
         <li>
+          <span class="tag mono">PNAS 2017</span>
+          <span>On-demand high-capacity ride-sharing via dynamic trip–vehicle assignment — with Alonso-Mora, Samaranayake, Frazzoli, and Rus. 1,700+ citations.</span>
+        </li>
+        <li>
+          <span class="tag mono">IROS 2018</span>
+          <span>Vehicle rebalancing for mobility-on-demand systems with ride-sharing.</span>
+        </li>
+        <li>
+          <span class="tag mono">IROS 2017</span>
+          <span>Predictive routing for autonomous mobility-on-demand systems with ride-sharing.</span>
+        </li>
+        <li>
           <span class="tag mono">RA-L 2026</span>
-          <span>High-capacity ridepooling for autonomous fleets, in IEEE Robotics and Automation Letters.</span>
+          <span>Accelerating high-capacity ridepooling in robo-taxi systems.</span>
         </li>
         <li>
-          <span class="tag mono">CNN</span>
-          <span>MIT ride-sharing research covered by CNN.</span>
-        </li>
-        <li>
-          <span class="tag mono">MIT</span>
-          <span>Lemelson Presidential Fellow &middot; MIT Diversity Fellow &middot; Shell-MIT Energy Fellow.</span>
+          <span class="tag mono">US Patent</span>
+          <span>On-demand high-capacity ride-sharing via dynamic trip–vehicle assignment with future requests, 2023.</span>
         </li>
       </ul>
+      <p class="research-note mono">At MIT: Lemelson Presidential Fellow &middot; MIT Diversity Fellow &middot; Shell-MIT Energy Fellow</p>
       <p class="scholar-link">
         <a class="textlink" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">All publications on Google Scholar <span class="arrow">↗</span></a>
       </p>
@@ -577,10 +608,11 @@
       <h2><span class="idx">04</span>Contact</h2>
       <p class="contact-lede">
         Always happy to talk about fleet optimization, transit, robotics, or a
-        routing problem that's keeping you up at night. LinkedIn is the fastest
-        way to reach me.
+        routing problem that's keeping you up at night. Email is the fastest way
+        to reach me: <a href="mailto:alex@wallar.me">alex@wallar.me</a>.
       </p>
       <div class="contact-links">
+        <a class="textlink" href="mailto:alex@wallar.me">Email <span class="arrow">↗</span></a>
         <a class="textlink" href="https://linkedin.com/in/wallarelvo" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
         <a class="textlink" href="https://github.com/a20r" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
         <a class="textlink" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">Google Scholar <span class="arrow">↗</span></a>
