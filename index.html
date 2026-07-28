@@ -9,6 +9,11 @@
   <meta property="og:description" content="Fleet orchestration at Zoox. Co-founder and former CTO of The Routing Company. Mobility-on-demand research at MIT CSAIL.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://a20r.github.io/">
+  <meta property="og:image" content="https://a20r.github.io/images/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://a20r.github.io/images/og.png">
   <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#141412" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232b4fd7'/%3E%3Cpath d='M18 48V30q0-6 6-6h14' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='45' cy='24' r='6' fill='white'/%3E%3C/svg%3E">
@@ -184,10 +189,27 @@
       height: auto;
       color: var(--ink);
     }
-    .hero-fig figcaption {
+    figure figcaption {
       margin-top: 0.9rem;
       color: var(--muted);
       text-align: center;
+    }
+    .section-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 3rem 4.5rem;
+      align-items: start;
+    }
+    .section-split.narrow-fig { grid-template-columns: minmax(0, 1fr) 210px; }
+    .side-fig { min-width: 0; }
+    .side-fig svg { display: block; width: 100%; height: auto; color: var(--ink); }
+    .req { stroke: var(--muted); opacity: 0.6; }
+    .avatar-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid var(--line-soft);
     }
     .route-a { stroke: var(--accent); }
     .route-b { stroke: var(--muted); opacity: 0.75; }
@@ -326,6 +348,9 @@
       .hero-fig { max-width: 480px; margin: 0 auto; width: 100%; }
       .job { grid-template-columns: 1fr; gap: 0.15rem; padding: 1.2rem 0; }
       .highlights li { grid-template-columns: 1fr; gap: 0.1rem; }
+      .section-split, .section-split.narrow-fig { grid-template-columns: 1fr; }
+      .side-fig { max-width: 340px; margin: 0 auto; width: 100%; }
+      .section-split.narrow-fig .side-fig { max-width: 220px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -514,6 +539,8 @@
   <section id="research">
     <div class="container">
       <h2><span class="idx">02</span>Research</h2>
+      <div class="section-split">
+      <div>
       <p class="research-lede">
         My research asks how much a city can move with how few vehicles. The headline
         answer, from the PNAS study I co-authored at MIT: 3,000 shared vehicles could
@@ -550,6 +577,43 @@
       <p class="scholar-link">
         <a class="textlink" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">All publications on Google Scholar <span class="arrow">↗</span></a>
       </p>
+      </div>
+
+      <figure class="side-fig">
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig2title">
+          <title id="fig2title">Diagram of ridepooling: two requested trips served by a single pooled vehicle route</title>
+          <defs>
+            <pattern id="grid2" width="56" height="56" patternUnits="userSpaceOnUse">
+              <path d="M56 0H0V56" fill="none" stroke="currentColor" stroke-opacity="0.07" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="340" height="300" fill="url(#grid2)"/>
+
+          <!-- requested trips -->
+          <line class="req" x1="85" y1="225" x2="240" y2="85" stroke-width="1.4" stroke-dasharray="3 7"/>
+          <line class="req" x1="140" y1="195" x2="305" y2="120" stroke-width="1.4" stroke-dasharray="3 7"/>
+
+          <!-- pooled vehicle route -->
+          <path id="pool" class="route-a" d="M40 270 C 55 252, 68 238, 85 225 S 122 200, 140 195 C 185 186, 218 135, 240 85 C 253 99, 282 110, 305 120"
+                fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- depot, pickups, dropoffs -->
+          <rect x="32" y="262" width="16" height="16" rx="3" class="stop" stroke-width="2"/>
+          <circle cx="85" cy="225" r="4" class="veh-a"/>
+          <circle cx="140" cy="195" r="4" class="veh-a"/>
+          <circle cx="240" cy="85" r="4.5" class="stop" stroke-width="2"/>
+          <circle cx="305" cy="120" r="4.5" class="stop" stroke-width="2"/>
+
+          <!-- vehicle -->
+          <g>
+            <circle r="7" class="veh-a" opacity="0.15"/>
+            <circle r="3.2" class="veh-a"/>
+            <animateMotion dur="9s" repeatCount="indefinite"><mpath href="#pool"/></animateMotion>
+          </g>
+        </svg>
+        <figcaption class="mono">fig. 02 — two trips, one vehicle</figcaption>
+      </figure>
+      </div>
     </div>
   </section>
 
@@ -600,17 +664,27 @@
   <section id="contact">
     <div class="container">
       <h2><span class="idx">04</span>Contact</h2>
-      <p class="contact-lede">
-        Always happy to talk about fleet optimization, transit, robotics, or a
-        routing problem that's keeping you up at night. Email is the fastest way
-        to reach me: <a href="mailto:alex@wallar.me">alex@wallar.me</a>.
-      </p>
-      <div class="contact-links">
-        <a class="textlink" href="mailto:alex@wallar.me">Email <span class="arrow">↗</span></a>
-        <a class="textlink" href="https://linkedin.com/in/wallarelvo" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
-        <a class="textlink" href="https://github.com/a20r" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
-        <a class="textlink" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">Google Scholar <span class="arrow">↗</span></a>
-        <a class="textlink" href="https://theroutingcompany.com" target="_blank" rel="noopener">The Routing Company <span class="arrow">↗</span></a>
+      <div class="section-split narrow-fig">
+        <div>
+          <p class="contact-lede">
+            Always happy to talk about fleet optimization, transit, robotics, or a
+            routing problem that's keeping you up at night. Email is the fastest way
+            to reach me: <a href="mailto:alex@wallar.me">alex@wallar.me</a>.
+          </p>
+          <div class="contact-links">
+            <a class="textlink" href="mailto:alex@wallar.me">Email <span class="arrow">↗</span></a>
+            <a class="textlink" href="https://linkedin.com/in/wallarelvo" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
+            <a class="textlink" href="https://github.com/a20r" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+            <a class="textlink" href="https://scholar.google.com/citations?user=Q9r5Xy8AAAAJ" target="_blank" rel="noopener">Google Scholar <span class="arrow">↗</span></a>
+            <a class="textlink" href="https://theroutingcompany.com" target="_blank" rel="noopener">The Routing Company <span class="arrow">↗</span></a>
+          </div>
+        </div>
+
+        <figure class="side-fig">
+          <img class="avatar-img" src="images/avatar.jpg" width="460" height="460" loading="lazy" decoding="async"
+               alt="Alex Wallar as a kid, grinning and holding a model ship in front of the Death Star — his longtime GitHub avatar.">
+          <figcaption class="mono">fig. 03 — the author, with an early fleet</figcaption>
+        </figure>
       </div>
     </div>
   </section>
